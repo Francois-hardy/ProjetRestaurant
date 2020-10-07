@@ -4,11 +4,17 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic|Material+Icons">
+    <link rel="stylesheet" href="https://unpkg.com/vue-material/dist/vue-material.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/vue-material/dist/theme/default.css">
     <script src="lib/vue.min.js"></script>
     <script src="lib/lodash.min.js"></script>
+    <script src="https://unpkg.com/vue-material"></script>
 
     <script src="js/script.js"></script>
-
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic|Material+Icons">
+    <link rel="stylesheet" href="https://unpkg.com/vue-material/dist/vue-material.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/vue-material/dist/theme/default.css">
     <link rel="stylesheet" href="css/styles.css">
 
     <title>Gestionnaire restaurants VueJS</title>
@@ -16,6 +22,8 @@
 
 <body>
 <div id="app">
+       
+
     <form v-on:submit="ajouterRestaurant">
         <label>
             Nom : <input type="text" required v-model="nom">
@@ -26,29 +34,53 @@
 
         <button>Ajouter</button>
     </form>
-
-    <h1>Nombre de restaurants : {{restaurants.length}}</h1>
-    <h1>Nombre total de restaurants : {{count}}</h1>
-
+    <h2>
+        <label>Recherche par nom: 
+            <input type="text" 
+                v-model="nomRecherche"
+                @input="getDataFromServer()"
+            >
+        </label>
+    </h2>
+    <h1>Nombre de restaurants : {{nbRestaurants}}</h1>
+    <p>Page courante : {{page}}</p>
+    <p>Nb de restaurants par page : 
+        <input type="range" min=5 max=100 step=1 
+            v-model="pagesize"
+            v-on:input="getDataFromServer()"
+        > {{pagesize}}
+    </p>
+    <button 
+        @click="pagePrecedente()"
+        :disabled="page==0"
+    >
+        Précédent
+    </button>
+    <button @click="pageSuivante()">Suivant</button>
     <table>
         <tr>
             <th>Nom</th>
             <th>Cuisine </th>
         </tr>
         <tbody>
-            <tr v-for="r,index in restaurants" v-on:click="supprimerRestaurant(index)" v-bind:style="{backgroundColor:getColor(index)}"
+            <tr v-for="(r,index) in restaurants" v-on:click="supprimerRestaurant(r._id)" v-bind:style="{backgroundColor:getColor(index)}"
                 v-bind:class="{bordureRouge:(index === 2)}">
                 <td>{{r.name}}</td>
                 <td> {{r.cuisine}}</td>
             </tr>
         </tbody>
     </table>
-    <br>
-    <h1>Page : {{page}}</h1>
-    <button @click="pagePrecedent">Précédent</button>
-    <button @click="pageSuivant">Suivant</button>
-
-
+    <h1>Table vue material</h1>
+    <md-table v-model="restaurants" md-sort="name" md-sort-order="asc" md-card md-fixed-header>
+            <md-table-toolbar>
+              <h1 class="md-title">Liste restaurants</h1>
+            </md-table-toolbar>
+      
+            <md-table-row slot="md-table-row" slot-scope="{ item }">
+              <md-table-cell md-label="Name" md-sort-by="name">{{ item.name }}</md-table-cell>
+              <md-table-cell md-label="Cuisine" md-sort-by="cuisine">{{ item.cuisine }}</md-table-cell>
+            </md-table-row>
+          </md-table>
 </div>
 </body>
 

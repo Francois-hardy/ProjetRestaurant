@@ -1,74 +1,101 @@
 window.onload=init;
 
-
 function init() {
+    Vue.use(VueMaterial.default);
     new Vue({
         el: "#app",
-		mounted() {
-			console.log("AVANT RENDU HTML");
-			this.getRestaurantsFromServer();
-
-		},
         data: {
             restaurants: [],
+            nbRestaurants:0,
             nom: '',
             cuisine: '',
-            page: 0,
-            count: 0,
-            pageSize: 10
+            apiBaseURL:"http://localhost:8080/api/restaurants",
+            page:0,
+            pagesize:10,
+            nomRecherche:""
+        },
+        mounted() {
+            console.log("AVANT AFFICHAGE");
+            this.getDataFromServer();
         },
         methods: {
-            supprimerRestaurant(index) {
-                this.restaurants.splice(index, 1);
+            // async obligatoire si utilisation de await, pas la peine sinon
+            async getDataFromServer() {
+                // On va chercher les données sur le serveur
+                /*
+                fetch(this.apiBaseURL)
+                .then(responseEnJson => {
+                    console.log("J'ai eu une réponse JSON du serveur ");
+                    return responseEnJson.json();
+                }).then(reponseJS => {
+                    //console.log(reponseJS.data[0].name);
+                    // on initialise le modele des restaurants
+                    // avec les data reçues
+                    this.restaurants = reponseJS.data;
+                }).catch(err => {
+                    console.log(err.msg);
+                });
+                */
+
+                // Avec await
+                let url = this.apiBaseURL 
+                + "?page=" + this.page
+                + "&pagesize=" + this.pagesize
+                + "&name=" + this.nomRecherche;
+
+                try {
+                    let reponseJSON = await fetch(url);
+                    let reponseJS = await reponseJSON.json();
+                    this.restaurants = reponseJS.data;
+                    this.nbRestaurants = reponseJS.count;
+                } catch(err) {
+                    console.log("Erreur dans les fetchs GET " + err.msg);
+                }  
             },
-            ajouterRestaurant(event) {
+            async supprimerRestaurant(id) {
+                try {
+                    let reponseJSON = await fetch(this.apiBaseURL + "/" + id, {
+                        method:"DELETE"
+                    });
+                    let reponseJS = await reponseJSON.json();
+                    console.log("Restaurant supprime : " + reponseJS.msg);
+                    this.getDataFromServer(); // on rafraichit l'affichage
+                } catch(err) {
+                    console.log("Erreur dans le fetchs DELETE " + err.msg);
+                }
+            },
+            async ajouterRestaurant(event) {
                 // eviter le comportement par defaut
                 event.preventDefault();
 
-                this.restaurants.push(
-                    {
-                        nom: this.nom,
-                        cuisine: this.cuisine
-                    }
-                );
+                let donneesFormulaire = new FormData();
+                donneesFormulaire.append("nom", this.nom);
+                donneesFormulaire.append("cuisine", this.cuisine);
+
+                let reponseJSON = await fetch(this.apiBaseURL, {
+                    method:"POST",
+                    body:donneesFormulaire
+                })
+                let reponseJS = await reponseJSON.json();
+                console.log(reponseJS.msg);
+
                 this.nom = "";
                 this.cuisine = "";
-            },
-            pagePrecedent() {
-                // url (required), options (optional)
-                if (this.page !== 0){
-                    this.page--;
-                    this.getRestaurantsFromServer();
-                }
 
+                this.getDataFromServer(); // on rafraichit
             },
-            pageSuivant() {
-                // url (required), options (optional)
-                if (this.page !== Math.round( this.count/this.pageSize)){
-                    this.page++;
-                    this.getRestaurantsFromServer();
-                }
-
-            },
-			getRestaurantsFromServer(){
-				// url (required), options (optional)
-                let url = 'http://localhost:8080/api/restaurants?page=';
-                url += this.page;
-
-				fetch(url)
-				.then(responseJSON => {
-                    responseJSON.json()
-                    .then(responseJS => {
-                        this.restaurants = responseJS.data
-                        this.count = responseJS.count
-                        console.log(responseJS)
-                        console.log(this.restaurants)
-                    })
-                })
-					
-			},
             getColor(index) {
                 return (index % 2) ? 'lightBlue' : 'pink';
+            },
+            pageSuivante() {
+                console.log("page suivante");
+                this.page++;
+                this.getDataFromServer();
+            },
+            pagePrecedente() {
+                console.log("page precedente");
+                this.page--;
+                this.getDataFromServer();
             }
         }
     })
