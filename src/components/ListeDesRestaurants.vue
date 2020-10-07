@@ -24,9 +24,9 @@
           @input="getRestaurantsFromServer()"
           type="range" min=2 max=1000 v-model="pagesize"
       >{{pagesize}}</p>
-    <button :disabled="page===0" @click="pagePrecedente()">Précédent</button>&nbsp&nbsp
+    <button :disabled="page===0" @click="pagePrecedente()">Précédent</button>
     <button :disabled="page===nbPagesTotal" @click="pageSuivante()">Suivant</button>
-    &nbsp Page courante : {{page}}
+    Page courante : {{page}}
     <br>
     <table>
       <tr>
