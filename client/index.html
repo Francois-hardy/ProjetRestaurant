@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <script src="lib/vue.min.js"></script>
+    <script src="lib/lodash.min.js"></script>
+
+    <script src="js/script.js"></script>
+
+    <link rel="stylesheet" href="css/styles.css">
+
+    <title>Gestionnaire restaurants VueJS</title>
+</head>
+
+<body>
+<div id="app">
+    <form v-on:submit="ajouterRestaurant">
+        <label>
+            Nom : <input type="text" required v-model="nom">
+        </label>
+        <label>
+            Cuisine : <input type="text" required v-model="cuisine">
+        </label>
+
+        <button>Ajouter</button>
+    </form>
+
+    <h1>Nombre de restaurants : {{restaurants.length}}</h1>
+    <h1>Nombre total de restaurants : {{count}}</h1>
+
+    <table>
+        <tr>
+            <th>Nom</th>
+            <th>Cuisine </th>
+        </tr>
+        <tbody>
+            <tr v-for="r,index in restaurants" v-on:click="supprimerRestaurant(index)" v-bind:style="{backgroundColor:getColor(index)}"
+                v-bind:class="{bordureRouge:(index === 2)}">
+                <td>{{r.name}}</td>
+                <td> {{r.cuisine}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <h1>Page : {{page}}</h1>
+    <button @click="pagePrecedent">Précédent</button>
+    <button @click="pageSuivant">Suivant</button>
+
+
+</div>
+</body>
+
+</html>
