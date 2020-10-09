@@ -1,18 +1,22 @@
 <template>
   <div>
-    <h2>{{msg}}</h2>
-    <form @submit.prevent="ajouterRestaurant(event)">
-      <label>
-        Nom : <input name="nom" type="text" required v-model="nom">
-      </label>
-      <label>
-        Cuisine : <input name="cuisine" type="text" required v-model="cuisine">
-      </label>
-
-      <button>Ajouter</button>
-    </form>
-
+    <md-toolbar class="md-accent">
     <h1>Nombre de restaurants : {{nbRestaurantsTotal}}</h1>
+    </md-toolbar>
+    <md-toolbar class="md-medium">
+      <div class="md-toolbar-row">
+        <h2>{{msg}}</h2>
+        <form @submit.prevent="ajouterRestaurant(event)">
+          <label>
+            Nom : <input name="nom" type="text" required v-model="nom">
+          </label>
+          <label>
+            Cuisine : <input name="cuisine" type="text" required v-model="cuisine">
+          </label>
+          <button>Ajouter</button>
+        </form>
+      </div>
+    </md-toolbar>
     <p>Chercher par nom : <input
         @input="chercherRestaurants()"
         type="text"
@@ -27,25 +31,21 @@
     <button :disabled="page===0" @click="pagePrecedente()">Précédent</button>
     <button :disabled="page===nbPagesTotal" @click="pageSuivante()">Suivant</button>
     Page courante : {{page}}
-    <br>
-    <table>
-      <tr>
-        <th>Nom</th>
-        <th>Cuisine </th>
-      </tr>
-      <tbody>
-      <tr
-          v-for="(r,index) in restaurants"
-          :key="index"
-          @click="supprimerRestaurant(r)"
-          :style="{backgroundColor:getColor(index)}"
-          :class="{bordureRouge:(index === 2)}"
-      >
-        <td>{{r.name}}</td>
-        <td> {{r.cuisine}}</td>
-      </tr>
-      </tbody>
-    </table>
+    <md-table>
+      <md-table-row>
+        <md-table-head>Nom</md-table-head>
+        <md-table-head>Cuisine</md-table-head>
+      </md-table-row>
+      <md-table-row     v-for="(r,index) in restaurants"
+                        :key="index"
+                        @click="supprimerRestaurant(r)"
+                        :style="{backgroundColor:getColor(index)}"
+                        :class="{bordureRouge:(index === 2)}">
+
+        <md-table-cell>{{r.name}}</md-table-cell>
+        <md-table-cell>{{r.cuisine}}</md-table-cell>
+      </md-table-row>
+    </md-table>
   </div>
 </template>
 
@@ -169,8 +169,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1 {
-  background-color:yellow;
+div{
+  margin-bottom: 10px;
+}
+h1{
+  margin-left: 35%;
+  margin-right: 35%;
 }
 h3 {
   margin: 40px 0 0;
