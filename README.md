@@ -4,5 +4,5 @@
 ```
 mongod
 node serverCrudWithMongo.js
-serve
+Lancer serve dans webstorm
 ```
