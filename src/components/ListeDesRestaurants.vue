@@ -3,8 +3,8 @@
     <md-toolbar class="md-accent">
     <h1>Nombre de restaurants : {{nbRestaurantsTotal}}</h1>
     </md-toolbar>
-    <md-toolbar class="md-medium">
-      <div class="md-toolbar-row">
+    <md-toolbar class="md-dense">
+
         <h2>{{msg}}</h2>
         <form @submit.prevent="ajouterRestaurant(event)">
           <label>
@@ -14,8 +14,9 @@
             Cuisine : <input name="cuisine" type="text" required v-model="cuisine">
           </label>
           <button>Ajouter</button>
+          <md-button class="md-raised">Ajouter</md-button>
         </form>
-      </div>
+
     </md-toolbar>
     <p>Chercher par nom : <input
         @input="chercherRestaurants()"
@@ -28,13 +29,13 @@
           @input="getRestaurantsFromServer()"
           type="range" min=2 max=1000 v-model="pagesize"
       >{{pagesize}}</p>
-    <button :disabled="page===0" @click="pagePrecedente()">Précédent</button>
-    <button :disabled="page===nbPagesTotal" @click="pageSuivante()">Suivant</button>
-    Page courante : {{page}}
+    <md-button class="md-raised" :disabled="page===0" @click="pagePrecedente()">Précédent</md-button>
+    <strong>Page courante : {{page}}</strong>
+    <md-button class="md-raised" :disabled="page===nbPagesTotal" @click="pageSuivante()">Suivant</md-button>
     <md-table>
       <md-table-row>
-        <md-table-head>Nom</md-table-head>
-        <md-table-head>Cuisine</md-table-head>
+        <md-table-head><Strong><i>Nom</i></Strong></md-table-head>
+        <md-table-head><Strong><i>Cuisine</i></Strong></md-table-head>
       </md-table-row>
       <md-table-row     v-for="(r,index) in restaurants"
                         :key="index"
@@ -169,25 +170,27 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+i{
+  color: black;
+  font-size: 20px;
+}
+th{
+  background-color: dimgrey;
+  border: medium solid black;
+}
+td{
+  border: medium solid black;
+}
+button{
+  margin-left: 10px;
+  margin-bottom: 5px;
+}
 div{
   margin-bottom: 10px;
 }
 h1{
+  color: black;
   margin-left: 35%;
   margin-right: 35%;
-}
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
 }
 </style>
