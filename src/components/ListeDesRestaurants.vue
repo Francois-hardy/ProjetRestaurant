@@ -75,11 +75,11 @@
             </md-dialog-actions>
           </md-dialog>
 
-          <md-button class="md-primary md-raised centrer" @click="showDialog3 = true">Modifier</md-button>
+          <md-button class="md-primary md-raised " @click="showDialog3 = true">Modifier</md-button>
         </md-table-cell>
         <md-table-cell>
 
-        <md-button class="md-primary md-raised centrer" @click="supprimerRestaurant(r)">Supprimer</md-button>
+        <md-button class="md-primary md-raised " @click="supprimerRestaurant(r)">Supprimer</md-button>
           </md-table-cell>
 
       </md-table-row>
