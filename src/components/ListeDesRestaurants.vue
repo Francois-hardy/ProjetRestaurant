@@ -1,11 +1,12 @@
 <template>
   <div>
+    <h2>{{msg}}</h2>
     <md-toolbar class="md-accent">
     <h1>Nombre de restaurants : {{nbRestaurantsTotal}}</h1>
     </md-toolbar>
     <md-toolbar class="md-dense">
 
-        <h2>{{msg}}</h2>
+      <!-- Ouverture de la boiture de dialogue Ajouter Restaurant -->
       <md-dialog :md-active.sync="showDialog">
         <md-dialog-title>Ajouter un restaurant</md-dialog-title>
 
@@ -16,7 +17,7 @@
           <label>
             Cuisine : <input name="cuisine" type="text" required v-model="cuisine">
           </label>
-          <button @click="showDialog = false">Ajouter</button>
+          <button>Ajouter</button>
         </form>
         <md-dialog-actions>
           <md-button class="md-primary" @click="showDialog = false">Close</md-button>
@@ -24,14 +25,25 @@
       </md-dialog>
       <md-snackbar :md-active.sync="affichage">Vous avez réussir à créer un restaurant !</md-snackbar>
 
-      <md-button class="md-primary md-raised" @click="showDialog = true">Ajouter un Restaurant</md-button>
+      <md-button class="md-primary md-raised centrer" @click="showDialog = true">Ajouter un Restaurant</md-button>
+
+      <!-- Ouverture de la boiture de dialogue recherche -->
+      <md-dialog :md-active.sync="showDialog2">
+        <md-dialog-title>Chercher par nom</md-dialog-title>
+        Chercher par nom : <input
+          @input="chercherRestaurants()"
+          type="text"
+          v-model="nomRestauRecherche">
+        <md-dialog-actions>
+          <md-button class="md-primary" @click="showDialog2 = false">Close</md-button>
+        </md-dialog-actions>
+      </md-dialog>
+      <md-snackbar :md-active.sync="affichage2">Vous avez lancer une recherche</md-snackbar>
+
+      <md-button class="md-primary md-raised centrer" @click="showDialog2 = true">Chercher par nom</md-button>
+
 
     </md-toolbar>
-    <p>Chercher par nom : <input
-        @input="chercherRestaurants()"
-        type="text"
-        v-model="nomRestauRecherche"
-    ></p>
     <p>Nb de pages total : {{nbPagesTotal}}</p>
     <p>Nb restaurants par page :
       <input
@@ -76,6 +88,7 @@ export default {
       nomRestauRecherche: "",
       affichage:false,
       showDialog: false,
+      showDialog2: false,
     }
   },
   mounted() {
@@ -209,5 +222,9 @@ h1{
   color: black;
   margin-left: 35%;
   margin-right: 35%;
+}
+.centrer{
+  left: 35%;
+  margin-right: 2%;
 }
 </style>
