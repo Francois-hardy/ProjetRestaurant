@@ -6,16 +6,25 @@
     <md-toolbar class="md-dense">
 
         <h2>{{msg}}</h2>
-        <form @submit.prevent="ajouterRestaurant(event)">
+      <md-dialog :md-active.sync="showDialog">
+        <md-dialog-title>Ajouter un restaurant</md-dialog-title>
+
+        <form @submit.prevent="ajouterRestaurant()">
           <label>
             Nom : <input name="nom" type="text" required v-model="nom">
           </label>
           <label>
             Cuisine : <input name="cuisine" type="text" required v-model="cuisine">
           </label>
-          <button>Ajouter</button>
-          <md-button class="md-raised">Ajouter</md-button>
+          <button @click="showDialog = false">Ajouter</button>
         </form>
+        <md-dialog-actions>
+          <md-button class="md-primary" @click="showDialog = false">Close</md-button>
+        </md-dialog-actions>
+      </md-dialog>
+      <md-snackbar :md-active.sync="affichage">Vous avez réussir à créer un restaurant !</md-snackbar>
+
+      <md-button class="md-primary md-raised" @click="showDialog = true">Ajouter un Restaurant</md-button>
 
     </md-toolbar>
     <p>Chercher par nom : <input
@@ -65,6 +74,8 @@ export default {
       nbPagesTotal: 0,
       msg: "",
       nomRestauRecherche: "",
+      affichage:false,
+      showDialog: false,
     }
   },
   mounted() {
@@ -157,19 +168,23 @@ export default {
           .catch(function (err) {
             console.log(err);
           });
+      //windows
 
       this.nom = "";
       this.cuisine = "";
+      this.affichage = false;
     },
     getColor(index) {
       return index % 2 ? "lightBlue" : "pink";
     },
   },
+
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 i{
   color: black;
   font-size: 20px;
