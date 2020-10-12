@@ -69,7 +69,15 @@
 
           <md-dialog :md-active.sync="showDialog3">
             <md-dialog-title>Modifier le restaurant</md-dialog-title>
-
+            <form @submit.prevent="modifierRestaurant($event)">
+              <label>
+                Nom : <input name="nom" type="text" required v-model="nom" value="test"/>
+              </label>
+              <label>
+                Cuisine : <input name="cuisine" type="text" value="test" required v-model="cuisine">
+              </label>
+              <button>Modifier</button>
+            </form>
             <md-dialog-actions>
               <md-button class="md-primary" @click="showDialog3 = false">Close</md-button>
             </md-dialog-actions>
@@ -169,6 +177,34 @@ export default {
           .catch(function (err) {
             console.log(err);
           });
+    },
+    modifierRestaurant(event) {
+      let form = event.target;
+      let donneesFormulaire = new FormData(form);
+      let url = "http://localhost:8080/api/restaurants?";
+      fetch(url, {
+        method: "POST",
+        body: donneesFormulaire,
+      })
+          .then((responseJSON) => {
+            responseJSON.json().then((resJS) => {
+              // Maintenant res est un vrai objet JavaScript
+              console.log(resJS.msg);
+              this.msg = resJS.msg;
+              // On rafraichit la vue
+              this.getRestaurantsFromServer();
+            });
+          })
+          .catch(function (err) {
+            console.log(err);
+          });
+      window.setTimeout(() => {
+        this.affichage = true
+      }, 1500)
+
+      this.nom = "";
+      this.cuisine = "";
+      this.affichage = false;
     },
     ajouterRestaurant(event) {
       // Récupération du formulaire. Pas besoin de document.querySelector
