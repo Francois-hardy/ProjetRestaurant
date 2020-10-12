@@ -168,7 +168,9 @@ export default {
           .catch(function (err) {
             console.log(err);
           });
-      //windows
+      window.setTimeout(() => {
+        this.affichage = true
+      }, 1500)
 
       this.nom = "";
       this.cuisine = "";
