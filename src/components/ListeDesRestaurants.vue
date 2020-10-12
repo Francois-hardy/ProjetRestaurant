@@ -38,8 +38,6 @@
           <md-button class="md-primary" @click="showDialog2 = false">Close</md-button>
         </md-dialog-actions>
       </md-dialog>
-      <md-snackbar :md-active.sync="affichage2">Vous avez lancer une recherche</md-snackbar>
-
       <md-button class="md-primary md-raised centrer" @click="showDialog2 = true">Chercher par nom</md-button>
 
 
@@ -57,15 +55,33 @@
       <md-table-row>
         <md-table-head><Strong><i>Nom</i></Strong></md-table-head>
         <md-table-head><Strong><i>Cuisine</i></Strong></md-table-head>
+        <md-table-head><Strong><i>Modifier</i></Strong></md-table-head>
+        <md-table-head><Strong><i>Supprimer</i></Strong></md-table-head>
       </md-table-row>
       <md-table-row     v-for="(r,index) in restaurants"
                         :key="index"
-                        @click="supprimerRestaurant(r)"
                         :style="{backgroundColor:getColor(index)}"
                         :class="{bordureRouge:(index === 2)}">
 
         <md-table-cell>{{r.name}}</md-table-cell>
         <md-table-cell>{{r.cuisine}}</md-table-cell>
+        <md-table-cell>
+
+          <md-dialog :md-active.sync="showDialog3">
+            <md-dialog-title>Modifier le restaurant</md-dialog-title>
+
+            <md-dialog-actions>
+              <md-button class="md-primary" @click="showDialog3 = false">Close</md-button>
+            </md-dialog-actions>
+          </md-dialog>
+
+          <md-button class="md-primary md-raised centrer" @click="showDialog3 = true">Modifier</md-button>
+        </md-table-cell>
+        <md-table-cell>
+
+        <md-button class="md-primary md-raised centrer" @click="supprimerRestaurant(r)">Supprimer</md-button>
+          </md-table-cell>
+
       </md-table-row>
     </md-table>
   </div>
@@ -89,6 +105,7 @@ export default {
       affichage:false,
       showDialog: false,
       showDialog2: false,
+      showDialog3: false,
     }
   },
   mounted() {
