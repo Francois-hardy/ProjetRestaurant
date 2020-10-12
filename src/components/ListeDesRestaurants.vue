@@ -9,7 +9,7 @@
       <md-dialog :md-active.sync="showDialog">
         <md-dialog-title>Ajouter un restaurant</md-dialog-title>
 
-        <form @submit.prevent="ajouterRestaurant()">
+        <form @submit.prevent="ajouterRestaurant($event)">
           <label>
             Nom : <input name="nom" type="text" required v-model="nom">
           </label>
