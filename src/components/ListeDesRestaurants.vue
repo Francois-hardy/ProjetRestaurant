@@ -44,14 +44,14 @@
 
 
     </md-toolbar>
-    <p>Nb de pages total : {{nbPagesTotal}}</p>
-    <p>Nb restaurants par page :
+    <p>Nombre de pages total : {{nbPagesTotal}}</p>
+    <p>Nombre restaurants par page :
       <input
           @input="getRestaurantsFromServer()"
           type="range" min=2 max=1000 v-model="pagesize"
       >{{pagesize}}</p>
     <md-button class="md-raised" :disabled="page===0" @click="pagePrecedente()">Précédent</md-button>
-    <strong>Page courante : {{page}}</strong>
+    <strong>Page courante : {{page+1}}</strong>
     <md-button class="md-raised" :disabled="page===nbPagesTotal" @click="pageSuivante()">Suivant</md-button>
     <md-table>
       <md-table-row>
