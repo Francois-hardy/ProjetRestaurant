@@ -77,6 +77,7 @@
         <md-table-head><Strong><i>Cuisine</i></Strong></md-table-head>
         <md-table-head><Strong><i>Modifier</i></Strong></md-table-head>
         <md-table-head><Strong><i>Supprimer</i></Strong></md-table-head>
+        <md-table-head><Strong><i>Détails</i></Strong></md-table-head>
       </md-table-row>
       <md-table-row     v-for="(r,index) in restaurants"
                         :key="index"
@@ -89,9 +90,13 @@
           <md-button class="md-primary md-raised " @click="AfficherModifier(r)">Modifier</md-button>
         </md-table-cell>
         <md-table-cell>
-
-        <md-button class="md-primary md-raised " @click="supprimerRestaurant(r)">Supprimer</md-button>
-          </md-table-cell>
+          <md-button class="md-primary md-raised " @click="supprimerRestaurant(r)">Supprimer</md-button>
+        </md-table-cell>
+        <md-table-cell>
+        <md-button class="md-fab md-primary">
+          <md-icon>add</md-icon>
+        </md-button>
+        </md-table-cell>
 
       </md-table-row>
     </md-table>
@@ -274,7 +279,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+@import url("https://fonts.googleapis.com/css?family=Material+Icons");
 i{
   color: black;
   font-size: 20px;
