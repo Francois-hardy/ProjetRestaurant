@@ -27,7 +27,7 @@
 
       <md-button class="md-primary md-raised centrer" @click="showDialog = true">Ajouter un Restaurant</md-button>
 
-      <!-- Ouverture de la boiture de dialogue recherche -->
+      <!-- Ouverture de la boite de dialogue recherche -->
       <md-dialog :md-active.sync="showDialog2">
         <md-dialog-title>Chercher par nom</md-dialog-title>
         Chercher par nom : <input
@@ -39,6 +39,26 @@
         </md-dialog-actions>
       </md-dialog>
       <md-button class="md-primary md-raised centrer" @click="showDialog2 = true">Chercher par nom</md-button>
+
+      <!-- Ouverture de la boite de dialogue modifier -->
+
+      <md-dialog :md-active.sync="showDialog3">
+        <md-dialog-title>Modifier le restaurant</md-dialog-title>
+        <form @submit.prevent="modifierRestaurant($event)">
+          <label>
+            Nom : <input name="nom" type="text" required v-model="nom"/>
+          </label>
+          <label>
+            Cuisine : <input name="cuisine" type="text" required v-model="cuisine"/>
+          </label>
+          <button>Modifier</button>
+        </form>
+        <md-dialog-actions>
+          <md-button class="md-primary" @click="showDialog3 = false">Close</md-button>
+        </md-dialog-actions>
+      </md-dialog>
+      <md-snackbar :md-active.sync="affichage2">Vous avez réussir à modifier un restaurant !</md-snackbar>
+      <md-snackbar :md-active.sync="affichage3">Vous avez réussir à supprimer un restaurant !</md-snackbar>
 
 
     </md-toolbar>
@@ -66,24 +86,7 @@
         <md-table-cell>{{r.name}}</md-table-cell>
         <md-table-cell>{{r.cuisine}}</md-table-cell>
         <md-table-cell>
-
-          <md-dialog :md-active.sync="showDialog3">
-            <md-dialog-title>Modifier le restaurant</md-dialog-title>
-            <form @submit.prevent="modifierRestaurant($event)">
-              <label>
-                Nom : <input name="nom" type="text" required v-model="nom" value="test"/>
-              </label>
-              <label>
-                Cuisine : <input name="cuisine" type="text" value="test" required v-model="cuisine">
-              </label>
-              <button>Modifier</button>
-            </form>
-            <md-dialog-actions>
-              <md-button class="md-primary" @click="showDialog3 = false">Close</md-button>
-            </md-dialog-actions>
-          </md-dialog>
-
-          <md-button class="md-primary md-raised " @click="showDialog3 = true">Modifier</md-button>
+          <md-button class="md-primary md-raised " @click="AfficherModifier(r)">Modifier</md-button>
         </md-table-cell>
         <md-table-cell>
 
@@ -111,9 +114,12 @@ export default {
       msg: "",
       nomRestauRecherche: "",
       affichage:false,
+      affichage2: false,
+      affichage3 : false,
       showDialog: false,
       showDialog2: false,
       showDialog3: false,
+      LID: null,
     }
   },
   mounted() {
@@ -177,13 +183,30 @@ export default {
           .catch(function (err) {
             console.log(err);
           });
+      window.setTimeout(() => {
+        this.affichage3 = true
+      }, 1500)
+
+      this.affichage3 = false;
+
+    },
+    AfficherModifier(event) {
+      this.showDialog3 = true;
+      console.log(event);
+      this.nom = event.name;
+      this.cuisine = event.cuisine;
+      this.LID = event._id;
     },
     modifierRestaurant(event) {
+
       let form = event.target;
+
       let donneesFormulaire = new FormData(form);
-      let url = "http://localhost:8080/api/restaurants?";
+
+      let url = "http://localhost:8080/api/restaurants/"+ this.LID;
+
       fetch(url, {
-        method: "POST",
+        method: "PUT",
         body: donneesFormulaire,
       })
           .then((responseJSON) => {
@@ -199,12 +222,11 @@ export default {
             console.log(err);
           });
       window.setTimeout(() => {
-        this.affichage = true
+        this.affichage2 = true
       }, 1500)
 
-      this.nom = "";
-      this.cuisine = "";
-      this.affichage = false;
+      this.affichage2 = false;
+      this.showDialog3 = false;
     },
     ajouterRestaurant(event) {
       // Récupération du formulaire. Pas besoin de document.querySelector
