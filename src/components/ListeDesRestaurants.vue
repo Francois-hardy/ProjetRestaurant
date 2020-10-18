@@ -17,6 +17,9 @@
           <label>
             Cuisine : <input name="cuisine" type="text" required v-model="cuisine">
           </label>
+          <label>
+            Lieux : <input name="lieux" type="text" required v-model="lieux">
+          </label>
           <button>Ajouter</button>
         </form>
         <md-dialog-actions>
@@ -51,6 +54,9 @@
           <label>
             Cuisine : <input name="cuisine" type="text" required v-model="cuisine"/>
           </label>
+          <label>
+            Lieux : <input name="lieux" type="text" required v-model="lieux">
+          </label>
           <button>Modifier</button>
         </form>
         <md-dialog-actions>
@@ -59,6 +65,17 @@
       </md-dialog>
       <md-snackbar :md-active.sync="affichage2">Vous avez réussir à modifier un restaurant !</md-snackbar>
       <md-snackbar :md-active.sync="affichage3">Vous avez réussir à supprimer un restaurant !</md-snackbar>
+
+      <!-- Ouverture de la boite de dialogue détails -->
+      <md-dialog :md-active.sync="showDialog4">
+        <md-dialog-title>Détails du restaurant</md-dialog-title>
+
+
+
+        <md-dialog-actions>
+          <md-button class="md-primary" @click="showDialog4 = false">Close</md-button>
+        </md-dialog-actions>
+      </md-dialog>
 
 
     </md-toolbar>
@@ -75,6 +92,7 @@
       <md-table-row>
         <md-table-head><Strong><i>Nom</i></Strong></md-table-head>
         <md-table-head><Strong><i>Cuisine</i></Strong></md-table-head>
+        <md-table-head><Strong><i>Lieux</i></Strong></md-table-head>
         <md-table-head><Strong><i>Modifier</i></Strong></md-table-head>
         <md-table-head><Strong><i>Supprimer</i></Strong></md-table-head>
         <md-table-head><Strong><i>Détails</i></Strong></md-table-head>
@@ -86,6 +104,7 @@
 
         <md-table-cell>{{r.name}}</md-table-cell>
         <md-table-cell>{{r.cuisine}}</md-table-cell>
+        <md-table-cell>{{r.borough}}</md-table-cell>
         <md-table-cell>
           <md-button class="md-primary md-raised " @click="AfficherModifier(r)">Modifier</md-button>
         </md-table-cell>
@@ -93,7 +112,7 @@
           <md-button class="md-primary md-raised " @click="supprimerRestaurant(r)">Supprimer</md-button>
         </md-table-cell>
         <md-table-cell>
-        <md-button class="md-fab md-primary">
+        <md-button class="md-fab md-primary" @click="AfficherCarte(r)">
           <md-icon>add</md-icon>
         </md-button>
         </md-table-cell>
@@ -124,7 +143,10 @@ export default {
       showDialog: false,
       showDialog2: false,
       showDialog3: false,
+      showDialog4: false,
       LID: null,
+      Adresse: null,
+      lieux: "",
     }
   },
   mounted() {
@@ -148,6 +170,7 @@ export default {
       url += "page=" + this.page;
       url += "&pagesize=" + this.pagesize;
       url += "&name=" + this.nomRestauRecherche;
+
 
       fetch(url)
           .then((responseJSON) => {
@@ -200,7 +223,16 @@ export default {
       console.log(event);
       this.nom = event.name;
       this.cuisine = event.cuisine;
+      this.lieux = event.borough;
       this.LID = event._id;
+    },
+    AfficherCarte(event) {
+      this.showDialog4 = true;
+      this.nom = event.name;
+      this.cuisine = event.cuisine;
+      this.LID = event._id;
+      this.Adresse = event.address;
+      this.lieux = event.borough;
     },
     modifierRestaurant(event) {
 
@@ -267,6 +299,7 @@ export default {
 
       this.nom = "";
       this.cuisine = "";
+      this.lieux = "";
       this.affichage = false;
     },
     getColor(index) {
