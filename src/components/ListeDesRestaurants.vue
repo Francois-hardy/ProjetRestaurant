@@ -17,9 +17,6 @@
           <label>
             Cuisine : <input name="cuisine" type="text" required v-model="cuisine">
           </label>
-          <label>
-            Lieux : <input name="lieux" type="text" required v-model="lieux">
-          </label>
           <button>Ajouter</button>
         </form>
         <md-dialog-actions>
@@ -49,13 +46,10 @@
         <md-dialog-title>Modifier le restaurant</md-dialog-title>
         <form @submit.prevent="modifierRestaurant($event)">
           <label>
-            Nom : <input name="nom" type="text" required v-model="nom"/>
+            Nom : <input name="nom" type="text" required v-model="editnom"/>
           </label>
           <label>
-            Cuisine : <input name="cuisine" type="text" required v-model="cuisine"/>
-          </label>
-          <label>
-            Lieux : <input name="lieux" type="text" required v-model="lieux">
+            Cuisine : <input name="cuisine" type="text" required v-model="editcuisine"/>
           </label>
           <button>Modifier</button>
         </form>
@@ -67,15 +61,29 @@
       <md-snackbar :md-active.sync="affichage3">Vous avez réussir à supprimer un restaurant !</md-snackbar>
 
       <!-- Ouverture de la boite de dialogue détails -->
-      <md-dialog :md-active.sync="showDialog4">
-        <md-dialog-title>Détails du restaurant</md-dialog-title>
 
 
+        <md-dialog :md-active.sync="showDialog4">
+          <md-dialog-title>Preferences</md-dialog-title>
 
-        <md-dialog-actions>
-          <md-button class="md-primary" @click="showDialog4 = false">Close</md-button>
-        </md-dialog-actions>
-      </md-dialog>
+          <md-tabs md-dynamic-height>
+            <md-tab md-label="General">
+              <p>{{nom}} {{cuisine}}</p>
+            </md-tab>
+
+            <md-tab md-label="Adresse">
+              <p>{{Adresse}}</p>
+            </md-tab>
+
+            <md-tab md-label="Account">
+              <p>Fran est gay</p>
+            </md-tab>
+          </md-tabs>
+
+          <md-dialog-actions>
+            <md-button class="md-primary" @click="showDialog4 = false">Close</md-button>
+          </md-dialog-actions>
+        </md-dialog>
 
 
     </md-toolbar>
@@ -92,7 +100,6 @@
       <md-table-row>
         <md-table-head><Strong><i>Nom</i></Strong></md-table-head>
         <md-table-head><Strong><i>Cuisine</i></Strong></md-table-head>
-        <md-table-head><Strong><i>Lieux</i></Strong></md-table-head>
         <md-table-head><Strong><i>Modifier</i></Strong></md-table-head>
         <md-table-head><Strong><i>Supprimer</i></Strong></md-table-head>
         <md-table-head><Strong><i>Détails</i></Strong></md-table-head>
@@ -104,7 +111,6 @@
 
         <md-table-cell>{{r.name}}</md-table-cell>
         <md-table-cell>{{r.cuisine}}</md-table-cell>
-        <md-table-cell>{{r.borough}}</md-table-cell>
         <md-table-cell>
           <md-button class="md-primary md-raised " @click="AfficherModifier(r)">Modifier</md-button>
         </md-table-cell>
@@ -131,6 +137,8 @@ export default {
       restaurants: [],
       nom: "",
       cuisine: "",
+      editnom: "",
+      editcuisine: "",
       nbRestaurantsTotal: 0,
       page: 0,
       pagesize: 10,
@@ -146,7 +154,8 @@ export default {
       showDialog4: false,
       LID: null,
       Adresse: null,
-      lieux: "",
+      LAT: null,
+      LON: null,
     }
   },
   mounted() {
@@ -216,14 +225,14 @@ export default {
       }, 1500)
 
       this.affichage3 = false;
+      this.showDialog = false;
 
     },
     AfficherModifier(event) {
       this.showDialog3 = true;
       console.log(event);
-      this.nom = event.name;
-      this.cuisine = event.cuisine;
-      this.lieux = event.borough;
+      this.editnom = event.name;
+      this.editcuisine = event.cuisine;
       this.LID = event._id;
     },
     AfficherCarte(event) {
@@ -232,7 +241,7 @@ export default {
       this.cuisine = event.cuisine;
       this.LID = event._id;
       this.Adresse = event.address;
-      this.lieux = event.borough;
+      this.LAT = event.coord;
     },
     modifierRestaurant(event) {
 
@@ -263,6 +272,8 @@ export default {
       }, 1500)
 
       this.affichage2 = false;
+      this.editnom = "";
+      this.editcuisine = "";
       this.showDialog3 = false;
     },
     ajouterRestaurant(event) {
@@ -299,7 +310,6 @@ export default {
 
       this.nom = "";
       this.cuisine = "";
-      this.lieux = "";
       this.affichage = false;
     },
     getColor(index) {
@@ -339,5 +349,8 @@ h1{
 .centrer{
   left: 35%;
   margin-right: 2%;
+}
+.md-dialog /deep/.md-dialog-container {
+  max-width: 768px;
 }
 </style>
