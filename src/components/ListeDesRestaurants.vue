@@ -53,7 +53,7 @@
 
 
         <md-dialog :md-active.sync="showDialog4">
-          <md-dialog-title>Preferences</md-dialog-title>
+          <md-dialog-title>Détails du restaurant</md-dialog-title>
 
           <md-tabs md-dynamic-height>
             <md-tab md-label="General">
@@ -65,6 +65,11 @@
               <p>{{Adresse}}</p>
               <p>{{LAT}}</p>
               <p>{{LON}}</p>
+              <GmapMap
+                :center="{lat: 10,lng: 10}"
+                :zoom="7"
+                style="width: 640px; height: 360px;"
+                ></GmapMap>
             </md-tab>
           </md-tabs>
 
@@ -114,9 +119,14 @@
           <md-icon>add</md-icon>
         </md-button>
         </md-table-cell>
-
       </md-table-row>
     </md-table>
+    <md-empty-state
+        md-icon="devices_other"
+        md-label="Ajouter un restaurant"
+        md-description="Aucun restaurant portant ce nom a été trouvé. Veuillez en créer un !">
+      <md-button class="md-primary md-raised" @click="showDialog = true">Ajouter un Restaurant</md-button>
+    </md-empty-state>
   </div>
 </template>
 
