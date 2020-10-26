@@ -27,18 +27,7 @@
 
       <md-button class="md-primary md-raised centrer" @click="showDialog = true">Ajouter un Restaurant</md-button>
 
-      <!-- Ouverture de la boite de dialogue recherche -->
-      <md-dialog :md-active.sync="showDialog2">
-        <md-dialog-title>Chercher par nom</md-dialog-title>
-        Chercher par nom : <input
-          @input="chercherRestaurants()"
-          type="text"
-          v-model="nomRestauRecherche">
-        <md-dialog-actions>
-          <md-button class="md-primary" @click="showDialog2 = false">Close</md-button>
-        </md-dialog-actions>
-      </md-dialog>
-      <md-button class="md-primary md-raised centrer" @click="showDialog2 = true">Chercher par nom</md-button>
+
 
       <!-- Ouverture de la boite de dialogue modifier -->
 
@@ -69,14 +58,13 @@
           <md-tabs md-dynamic-height>
             <md-tab md-label="General">
               <p>{{nom}} {{cuisine}}</p>
+              <p>{{Numero}} {{Lieux}}</p>
             </md-tab>
 
             <md-tab md-label="Adresse">
               <p>{{Adresse}}</p>
-            </md-tab>
-
-            <md-tab md-label="Account">
-              <p>Fran est gay</p>
+              <p>{{LAT}}</p>
+              <p>{{LON}}</p>
             </md-tab>
           </md-tabs>
 
@@ -87,7 +75,11 @@
 
 
     </md-toolbar>
-    <p>Nombre de pages total : {{nbPagesTotal}}</p>
+
+    <p>Chercher par nom : <input
+        @input="chercherRestaurants()"
+        type="text"
+        v-model="nomRestauRecherche"> Nombre de pages total : {{nbPagesTotal}}</p>
     <p>Nombre restaurants par page :
       <input
           @input="getRestaurantsFromServer()"
@@ -156,6 +148,8 @@ export default {
       Adresse: null,
       LAT: null,
       LON: null,
+      Lieux: "",
+      Numero: 0,
     }
   },
   mounted() {
@@ -201,6 +195,7 @@ export default {
     chercherRestaurants: _.debounce(function () {
       // appelée que si on n'a pas tapé de touches pendant un certain délai
       this.getRestaurantsFromServer();
+
     }, 300),
     supprimerRestaurant(r) {
       let url = "http://localhost:8080/api/restaurants/" + r._id;
@@ -241,7 +236,10 @@ export default {
       this.cuisine = event.cuisine;
       this.LID = event._id;
       this.Adresse = event.address;
-      this.LAT = event.coord;
+      this.LAT = this.Adresse.coord[0];
+      this.LON = this.Adresse.coord[1];
+      this.Numero = this.Adresse.building;
+      this.Lieux = this.Adresse.street;
     },
     modifierRestaurant(event) {
 
@@ -347,8 +345,7 @@ h1{
   margin-right: 35%;
 }
 .centrer{
-  left: 35%;
-  margin-right: 2%;
+  left: 43%;
 }
 .md-dialog /deep/.md-dialog-container {
   max-width: 768px;
