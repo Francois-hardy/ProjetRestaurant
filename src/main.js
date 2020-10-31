@@ -3,17 +3,15 @@ import App from './App.vue'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
-import VueGeolocation from "vue-browser-geolocation";
-import * as VueGoogleMaps from "vue2-google-maps";
+import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
+import 'leaflet/dist/leaflet.css';
+
 
 Vue.use(VueMaterial);
-Vue.use(VueGeolocation);
-Vue.use(VueGoogleMaps, {
-  load: {
-    key: 'AIzaSyDAhdNA0xjQpCKlNlME5cUHc5_ewc16TyA'
-  },
-  installComponents: true
-});
+Vue.component('l-map', LMap);
+Vue.component('l-tile-layer', LTileLayer);
+Vue.component('l-marker', LMarker);
+
 
 Vue.config.productionTip = false
 

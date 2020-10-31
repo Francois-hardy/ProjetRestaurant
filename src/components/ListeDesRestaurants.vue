@@ -57,7 +57,7 @@
 
           <md-tabs md-dynamic-height>
             <md-tab md-label="General">
-              <p>{{nom}} {{cuisine}}</p>
+              <p>{{editnom}} {{editcuisine}}</p>
               <p>{{Numero}} {{Lieux}}</p>
             </md-tab>
 
@@ -65,11 +65,10 @@
               <p>{{Adresse}}</p>
               <p>{{LAT}}</p>
               <p>{{LON}}</p>
-              <GmapMap
-                :center="{lat: 10,lng: 10}"
-                :zoom="7"
-                style="width: 640px; height: 360px;"
-                ></GmapMap>
+            </md-tab>
+            <md-tab md-label="Map">
+
+
             </md-tab>
           </md-tabs>
 
@@ -242,14 +241,15 @@ export default {
     },
     AfficherCarte(event) {
       this.showDialog4 = true;
-      this.nom = event.name;
-      this.cuisine = event.cuisine;
+      this.editnom = event.name;
+      this.editcuisine = event.cuisine;
       this.LID = event._id;
       this.Adresse = event.address;
       this.LAT = this.Adresse.coord[0];
       this.LON = this.Adresse.coord[1];
       this.Numero = this.Adresse.building;
       this.Lieux = this.Adresse.street;
+
     },
     modifierRestaurant(event) {
 
