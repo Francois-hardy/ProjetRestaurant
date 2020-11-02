@@ -81,6 +81,14 @@
                     :url="url"
                     :attribution="attribution"
                 />
+                <l-marker :lat-lng="withTooltip">
+                  <l-tooltip :options="{ permanent: true, interactive: true }">
+                    <div>
+                      Le restaurant est ici !
+                      <p>{{editnom}} {{editcuisine}}</p>
+                    </div>
+                  </l-tooltip>
+                </l-marker>
               </l-map>
               </div>
             </md-tab>
@@ -110,6 +118,7 @@
       <md-table-row>
         <md-table-head><Strong><i>Nom</i></Strong></md-table-head>
         <md-table-head><Strong><i>Cuisine</i></Strong></md-table-head>
+        <md-table-head><Strong><i>Endroit</i></Strong></md-table-head>
         <md-table-head><Strong><i>Modifier</i></Strong></md-table-head>
         <md-table-head><Strong><i>Supprimer</i></Strong></md-table-head>
         <md-table-head><Strong><i>Détails</i></Strong></md-table-head>
@@ -121,6 +130,7 @@
 
         <md-table-cell>{{r.name}}</md-table-cell>
         <md-table-cell>{{r.cuisine}}</md-table-cell>
+        <md-table-cell>{{r.borough}}</md-table-cell>
         <md-table-cell>
           <md-button class="md-primary md-raised " @click="AfficherModifier(r)">Modifier</md-button>
         </md-table-cell>
@@ -175,14 +185,13 @@ export default {
       Lieux: "",
       Numero: 0,
       zoom: 13,
-      center: latLng(47.41322, -1.219482),
+      center: null,
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution:
           '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      withPopup: latLng(47.41322, -1.219482),
-      withTooltip: latLng(47.41422, -1.250482),
+      withTooltip: null,
       currentZoom: 11.5,
-      currentCenter: latLng(47.41322, -1.219482),
+      currentCenter: null,
       showParagraph: false,
       mapOptions: {
         zoomSnap: 0.5
@@ -280,11 +289,13 @@ export default {
       this.editcuisine = event.cuisine;
       this.LID = event._id;
       this.Adresse = event.address;
-      this.LAT = this.Adresse.coord[0];
-      this.LON = this.Adresse.coord[1];
+      this.LON = this.Adresse.coord[0];
+      this.LAT = this.Adresse.coord[1];
       this.Numero = this.Adresse.building;
       this.Lieux = this.Adresse.street;
-
+      this.center = latLng(this.LAT, this.LON);
+      this.withTooltip = latLng(this.LAT, this.LON);
+      this.currentCenter = latLng(this.LAT,this.LON);
     },
     modifierRestaurant(event) {
 
