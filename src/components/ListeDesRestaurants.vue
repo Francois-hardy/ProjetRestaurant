@@ -59,6 +59,30 @@
             <md-tab md-label="General">
               <p>{{editnom}} {{editcuisine}}</p>
               <p>{{Numero}} {{Lieux}}</p>
+              <p>{{Grade}}</p>
+              <p>{{Datee}}</p>
+              <p>Année d'évaluation : {{Dateee}}</p>
+              <p>Gradation : {{etoile}}</p>
+              <p>Score : {{score}}</p>
+              <md-table>
+                <md-table-row>
+                  <md-table-head><Strong><i>{{Dateee}}</i></Strong></md-table-head>
+                  <md-table-head><Strong><i>{{Dateee2}}</i></Strong></md-table-head>
+                  <md-table-head><Strong><i>{{Dateee3}}</i></Strong></md-table-head>
+                </md-table-row>
+
+                <md-table-row>
+                  <md-table-cell>{{etoile}}</md-table-cell>
+                  <md-table-cell>{{etoile2}}</md-table-cell>
+                  <md-table-cell>{{etoile3}}</md-table-cell>
+                </md-table-row>
+                <md-table-row>
+                  <md-table-cell>{{score}}</md-table-cell>
+                  <md-table-cell>{{score2}}</md-table-cell>
+                  <md-table-cell>{{score3}}</md-table-cell>
+                </md-table-row>
+              </md-table>
+
             </md-tab>
 
             <md-tab md-label="Adresse">
@@ -178,6 +202,22 @@ export default {
       showDialog2: false,
       showDialog3: false,
       showDialog4: false,
+      Datee: null,
+      Dateee:null,
+      Grade: null,
+      etoile: null,
+      score: null,
+
+      Datee2: null,
+      Dateee2:null,
+      etoile2: null,
+      score2: null,
+
+      Datee3: null,
+      Dateee3:null,
+      etoile3: null,
+      score3: null,
+
       LID: null,
       Adresse: null,
       LAT: null,
@@ -289,6 +329,23 @@ export default {
       this.editcuisine = event.cuisine;
       this.LID = event._id;
       this.Adresse = event.address;
+
+      this.Grade = event.grades;
+      this.Datee = this.Grade[0];
+      this.Dateee = this.Datee.date;
+      this.etoile = this.Datee.grade;
+      this.score = this.Datee.score;
+
+      this.Datee2 = this.Grade[1];
+      this.Dateee2 = this.Datee2.date;
+      this.etoile2 = this.Datee2.grade;
+      this.score2 = this.Datee2.score;
+
+      this.Datee3 = this.Grade[2];
+      this.Dateee3 = this.Datee3.date;
+      this.etoile3 = this.Datee3.grade;
+      this.score3 = this.Datee3.score;
+
       this.LON = this.Adresse.coord[0];
       this.LAT = this.Adresse.coord[1];
       this.Numero = this.Adresse.building;
