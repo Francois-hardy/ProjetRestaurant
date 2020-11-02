@@ -59,27 +59,23 @@
             <md-tab md-label="General">
               <p>{{editnom}} {{editcuisine}}</p>
               <p>{{Numero}} {{Lieux}}</p>
-              <p>{{Grade}}</p>
-              <p>{{Datee}}</p>
-              <p>Année d'évaluation : {{Dateee}}</p>
-              <p>Gradation : {{etoile}}</p>
-              <p>Score : {{score}}</p>
+              <p><strong><center><h2>Le score obtenue par le restaurant</h2></center></strong></p>
               <md-table>
                 <md-table-row>
-                  <md-table-head><Strong><i>{{Dateee}}</i></Strong></md-table-head>
-                  <md-table-head><Strong><i>{{Dateee2}}</i></Strong></md-table-head>
-                  <md-table-head><Strong><i>{{Dateee3}}</i></Strong></md-table-head>
+                  <md-table-head><Strong><i>Date : {{Dateee | formatDate }}</i></Strong></md-table-head>
+                  <md-table-head><Strong><i>Date : {{Dateee2 | formatDate }}</i></Strong></md-table-head>
+                  <md-table-head><Strong><i>Date : {{Dateee3 | formatDate }}</i></Strong></md-table-head>
                 </md-table-row>
 
                 <md-table-row>
-                  <md-table-cell>{{etoile}}</md-table-cell>
-                  <md-table-cell>{{etoile2}}</md-table-cell>
-                  <md-table-cell>{{etoile3}}</md-table-cell>
+                  <md-table-cell>Grade : {{etoile}}</md-table-cell>
+                  <md-table-cell>Grade : {{etoile2}}</md-table-cell>
+                  <md-table-cell>Grade : {{etoile3}}</md-table-cell>
                 </md-table-row>
                 <md-table-row>
-                  <md-table-cell>{{score}}</md-table-cell>
-                  <md-table-cell>{{score2}}</md-table-cell>
-                  <md-table-cell>{{score3}}</md-table-cell>
+                  <md-table-cell>Score : {{score}}</md-table-cell>
+                  <md-table-cell>Score : {{score2}}</md-table-cell>
+                  <md-table-cell>Score : {{score3}}</md-table-cell>
                 </md-table-row>
               </md-table>
 
