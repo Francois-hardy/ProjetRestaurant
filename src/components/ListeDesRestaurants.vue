@@ -164,12 +164,14 @@
         </md-table-cell>
       </md-table-row>
     </md-table>
+    <md-dialog :md-active.sync="showDialog5">
     <md-empty-state
         md-icon="devices_other"
         md-label="Ajouter un restaurant"
         md-description="Aucun restaurant portant ce nom a été trouvé. Veuillez en créer un !">
-      <md-button class="md-primary md-raised" @click="showDialog = true">Ajouter un Restaurant</md-button>
+      <md-button class="md-primary md-raised" @click="showDialog = true, showDialog5 = false">Ajouter un Restaurant</md-button>
     </md-empty-state>
+    </md-dialog>
   </div>
 </template>
 
@@ -198,6 +200,7 @@ export default {
       showDialog2: false,
       showDialog3: false,
       showDialog4: false,
+      showDialog5: false,
       Datee: null,
       Dateee:null,
       Grade: null,
@@ -275,6 +278,9 @@ export default {
               this.nbPagesTotal = Math.round(
                   this.nbRestaurantsTotal / this.pagesize
               );
+              if(this.nbRestaurantsTotal===0){
+                this.showDialog5 = true;
+              }
             });
           })
           .catch(function (err) {
@@ -420,7 +426,7 @@ export default {
       this.affichage = false;
     },
     getColor(index) {
-      return index % 2 ? "lightBlue" : "pink";
+      return index % 2 ? "lightBlue" : "lightBlue";
     },
   },
 
