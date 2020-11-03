@@ -158,7 +158,7 @@
           <md-button class="md-primary md-raised " @click="supprimerRestaurant(r)">Supprimer</md-button>
         </md-table-cell>
         <md-table-cell>
-        <md-button class="md-fab md-primary" @click="AfficherCarte(r)">
+        <md-button class="md-fab md-primary" :disabled="r.address === undefined" @click="AfficherCarte(r)">
           <md-icon>add</md-icon>
         </md-button>
         </md-table-cell>
