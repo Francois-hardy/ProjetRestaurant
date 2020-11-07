@@ -58,7 +58,7 @@
           <md-tabs md-dynamic-height>
             <md-tab md-label="General">
               <p>{{editnom}} {{editcuisine}}</p>
-              <p>{{Numero}} {{Lieux}}</p>
+              <p>{{Numero}} {{Lieux}} , {{endroit}}</p>
               <p><strong><center><h2>Le score obtenue par le restaurant</h2></center></strong></p>
               <md-table>
                 <md-table-row>
@@ -81,10 +81,8 @@
 
             </md-tab>
 
-            <md-tab md-label="Adresse">
+            <md-tab md-label="Photo">
               <p>{{Adresse}}</p>
-              <p>{{LAT}}</p>
-              <p>{{LON}}</p>
             </md-tab>
             <md-tab md-label="Map">
               <div style="height: 500px; width: 100%">
@@ -189,6 +187,7 @@ export default {
       editcuisine: "",
       nbRestaurantsTotal: 0,
       page: 0,
+      endroit: null,
       pagesize: 10,
       nbPagesTotal: 0,
       msg: "",
@@ -352,6 +351,7 @@ export default {
       this.LAT = this.Adresse.coord[1];
       this.Numero = this.Adresse.building;
       this.Lieux = this.Adresse.street;
+      this.endroit = event.borough;
       this.center = latLng(this.LAT, this.LON);
       this.withTooltip = latLng(this.LAT, this.LON);
       this.currentCenter = latLng(this.LAT,this.LON);
@@ -450,6 +450,7 @@ td{
 button{
   margin-left: 10px;
   margin-bottom: 5px;
+  margin-right: 10px;
 }
 div{
   margin-bottom: 10px;
@@ -465,5 +466,8 @@ h1{
 .md-dialog /deep/.md-dialog-container {
   max-width: 768px;
   max-height: 750px;
+}
+label{
+  margin-left: 15px;
 }
 </style>
